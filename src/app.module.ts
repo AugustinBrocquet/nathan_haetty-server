@@ -10,6 +10,7 @@ import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
 import { DownloadModule } from './download/download.module';
 import { PostsModule } from './posts/posts.module';
 import { ImagesModule } from './images/images.module';
+import { InstagramModule } from './instagram/instagram.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { ImagesModule } from './images/images.module';
     DownloadModule,
     MessagesModule,
     PostsModule,
-    ImagesModule
+    ImagesModule,
+    InstagramModule
   ],
   controllers: [AppController],
   providers: [AppService],
