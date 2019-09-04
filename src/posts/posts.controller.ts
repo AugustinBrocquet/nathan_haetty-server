@@ -29,6 +29,9 @@ export class PostsController {
     ))
     async create(@UploadedFiles() files, @Body() createPostDto: CreatePostDto) {
 
+
+         return [ createPostDto];
+
         createPostDto.picture = files.picture[0].path;
         const pathsSubPictures = [];
         files.sub_pictures.forEach(file => {
