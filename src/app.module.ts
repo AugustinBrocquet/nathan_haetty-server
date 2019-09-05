@@ -37,7 +37,7 @@ import { InstagramModule } from './instagram/instagram.module';
     MessagesModule,
     PostsModule,
     ImagesModule,
-    InstagramModule
+    InstagramModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -43,13 +43,11 @@ export class PostsController {
     }
 
     @Get()
-    @UseGuards(AuthGuard())
     async getPosts() {
         return await this.postsService.getPosts();
     }
 
     @Get('/:postId')
-    @UseGuards(AuthGuard())
     async getPost(@Param('postId') postId: string) {
         return await this.postsService.getPost(postId);
     }
