@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, UseGuards, Param, Delete, UseInterceptors,
 import { AuthGuard } from '@nestjs/passport';
 import { PostsService } from './services/posts.service';
 import { CreatePostDto } from './DTOs/create-post.dto';
-import { FileInterceptor, FilesInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from '../upload/utils/file-upload.utils';
 import { diskStorage } from 'multer';
 
@@ -29,11 +29,11 @@ export class PostsController {
     ))
     async create(@UploadedFiles() files, @Body() createPostDto: CreatePostDto) {
 
-
-         return [ createPostDto];
+        // return [files.picture, files.sub_pictures, createPostDto];
 
         createPostDto.picture = files.picture[0].path;
         const pathsSubPictures = [];
+
         files.sub_pictures.forEach(file => {
             pathsSubPictures.push(file.path);
         });
