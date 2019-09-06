@@ -11,6 +11,7 @@ import { DownloadModule } from './download/download.module';
 import { PostsModule } from './posts/posts.module';
 import { ImagesModule } from './images/images.module';
 import { InstagramModule } from './instagram/instagram.module';
+import { VideosModule } from './videos/videos.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { InstagramModule } from './instagram/instagram.module';
     PostsModule,
     ImagesModule,
     InstagramModule,
+    VideosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

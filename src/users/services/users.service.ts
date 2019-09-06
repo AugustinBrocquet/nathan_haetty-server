@@ -9,8 +9,6 @@ import { MailerService } from '@nest-modules/mailer';
 @Injectable()
 export class UsersService {
 
-    private readonly tableName: string = 'test';
-
     constructor(
         @InjectModel('User') private userModel: Model<User>,
         private readonly mailerService: MailerService,
