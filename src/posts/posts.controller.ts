@@ -31,11 +31,11 @@ export class PostsController {
 
         // return [files.picture, files.sub_pictures, createPostDto];
 
-        createPostDto.picture = files.picture[0].path;
+        createPostDto.picture = files.picture[0].filename;
         const pathsSubPictures = [];
 
         files.sub_pictures.forEach(file => {
-            pathsSubPictures.push(file.path);
+            pathsSubPictures.push(file.filename);
         });
         createPostDto.sub_pictures = pathsSubPictures;
         // return [createPostDto];
