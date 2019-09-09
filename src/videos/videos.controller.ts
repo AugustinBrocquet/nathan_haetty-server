@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Get, Param, UseGuards, Delete } from '@nestjs/common';
-import { VideosService } from './services/videos/videos.service';
+import { VideosService } from './services/videos.service';
 import { CreateVideoDto } from './DTOs/create-video.dto';
 import { AuthGuard } from '@nestjs/passport';
 
