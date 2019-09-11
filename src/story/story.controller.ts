@@ -1,7 +1,10 @@
-import { Controller, Post, Body, Get, Param, UseGuards, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { StoryService } from './services/story.service';
 import { CreateStoryDto } from './DTOs/create.story.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { editFileName, imageFileFilter } from '../upload/utils/file-upload.utils';
+import { diskStorage } from 'multer';
 
 @Controller('story')
 export class StoryController {
@@ -11,8 +14,21 @@ export class StoryController {
     }
 
     @Post()
-    async create(@Body() createVideoDto: CreateStoryDto) {
-        return await this.storyService.create(createVideoDto);
+    @UseInterceptors(FileFieldsInterceptor(
+        [
+            { name: 'image', maxCount: 1 },
+        ]
+        , {
+            storage: diskStorage({
+                destination: './resources/img',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        },
+    ))
+    async create(@UploadedFiles() files, @Body() createStoryDto: CreateStoryDto) {
+        createStoryDto.image = files.image[0].filename;
+        return await this.storyService.create(createStoryDto);
     }
 
     @Get()
