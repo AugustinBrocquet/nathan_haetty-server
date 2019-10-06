@@ -6,6 +6,7 @@
 /resources/csv
 /resources/pdf
 /resources/xlsx
+/resources/videos
 
 # Logs
 logs
