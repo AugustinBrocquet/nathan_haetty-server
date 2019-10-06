@@ -3,7 +3,6 @@
 /node_modules
 
 # resources
-/resources/img
 /resources/csv
 /resources/pdf
 /resources/xlsx
