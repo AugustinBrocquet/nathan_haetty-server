@@ -17,12 +17,6 @@ export const StorySchema = new mongoose.Schema({
         required: true,
         default: null,
     },
-    image: {
-        type: String,
-        unique: false,
-        required: true,
-        default: null,
-    },
     created_at: {
         type: Date,
         unique: false,
