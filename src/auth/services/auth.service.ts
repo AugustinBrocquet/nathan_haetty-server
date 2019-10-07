@@ -68,7 +68,7 @@ export class AuthService {
             status: 200,
             message: '',
             data: {
-                expiresIn: 3600,
+                expiresIn: 7200,
                 token: jwt,
                 userId: user._id,
             },

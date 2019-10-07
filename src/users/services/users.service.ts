@@ -27,7 +27,7 @@ export class UsersService {
 
     async findOneByEmail(email): Model<User> {
 
-        return await this.userModel.findOne({ email: email });
+        return await this.userModel.findOne({ email });
 
     }
 
@@ -35,7 +35,7 @@ export class UsersService {
 
         try {
 
-            const user = await this.userModel.findOne({ email: email });
+            const user = await this.userModel.findOne({ email });
 
             if (!user) {
                 return 'User not found';
@@ -99,7 +99,6 @@ export class UsersService {
 
     async resetPassword(token: string, password: string, confirmPassword: string) {
 
-        console.log(password +' '+confirmPassword)
         try {
             if (password !== confirmPassword) {
                 return 'password and confirm password do not match';

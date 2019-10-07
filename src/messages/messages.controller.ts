@@ -10,9 +10,10 @@ export class MessagesController {
     }
 
     @Post()
-    @UseGuards(AuthGuard())
-    async create(@Body() createUserDto: CreateMessageDto) {
-        return await this.messagesService.create(createUserDto);
+    // @UseGuards(AuthGuard())
+    async create(@Body() createMessageDto: CreateMessageDto) {
+        return createMessageDto;
+        return await this.messagesService.create(createMessageDto);
     }
 
     @Get()
