@@ -13,6 +13,7 @@ import { ImagesModule } from './images/images.module';
 import { InstagramModule } from './instagram/instagram.module';
 import { VideosModule } from './videos/videos.module';
 import { StoryModule } from './story/story.module';
+import { WallpapersModule } from './wallpapers/wallpapers.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { StoryModule } from './story/story.module';
     InstagramModule,
     VideosModule,
     StoryModule,
+    WallpapersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
