@@ -17,7 +17,7 @@ export class PostsService {
     }
 
     async getPosts() {
-        return await this.postModel.find().exec();
+        return await this.postModel.find().sort({created_at: '-1'}).exec();
     }
 
     async getPost(postId: string) {

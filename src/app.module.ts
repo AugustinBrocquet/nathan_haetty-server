@@ -20,9 +20,9 @@ import { WallpapersModule } from './wallpapers/wallpapers.module';
     MongooseModule.forRoot('mongodb+srv://progadev:RashadEvans5@sandbox-pgopq.gcp.mongodb.net/test?retryWrites=true&w=majority'),
     MailerModule.forRootAsync({
       useFactory: () => ({
-        transport: 'smtps://proga.404.dev@gmail.com:RashadEvans5@smtp.gmail.com',
+        transport: 'smtps://contact@nathanhaetty.com:Aurorecouttet27@smtp.gmail.com',
         defaults: {
-          from: '"Proga Dev" <proga.404.dev@gmail.com>',
+          from: '"Nathan HAETTY" <contact@nathanhaetty.com',
         },
         template: {
           dir: __dirname + '/emails',
