@@ -1,6 +1,9 @@
 {
   "name": "nestjs-server",
   "version": "0.0.1",
+  "engines": {
+    "node": "12.12.0"
+  },
   "description": "",
   "author": "",
   "license": "MIT",
