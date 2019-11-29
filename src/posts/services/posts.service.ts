@@ -37,7 +37,7 @@ export class PostsService {
         try {
             const oldPost = await this.postModel.findById(post._id);
 
-            if (!post) {
+            if (!oldPost) {
                 return 'Post not found';
             }
 

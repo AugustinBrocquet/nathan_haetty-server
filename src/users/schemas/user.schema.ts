@@ -84,6 +84,8 @@ UserSchema.pre('save', function (next) {
 
 });
 
+
+
 UserSchema.methods.checkPassword = function (attempt, callback) {
 
     const user = this;

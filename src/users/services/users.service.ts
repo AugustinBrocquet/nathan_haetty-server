@@ -8,115 +8,131 @@ import { MailerService } from '@nest-modules/mailer';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectModel('User') private userModel: Model<User>,
+    private readonly mailerService: MailerService,
+  ) {}
 
-    constructor(
-        @InjectModel('User') private userModel: Model<User>,
-        private readonly mailerService: MailerService,
-    ) { }
+  async create(createUserDto: CreateUserDto) {
+    const createdUser = new this.userModel(createUserDto);
+    return await createdUser.save();
+  }
 
-    async create(createUserDto: CreateUserDto) {
+  async getUsers() {
+    return await this.userModel.find().exec();
+  }
 
-        const createdUser = new this.userModel(createUserDto);
-        return await createdUser.save();
+  async findOneByEmail(email): Model<User> {
+    return await this.userModel.findOne({ email });
+  }
 
+  async generatePasswordResetEmail(email: string) {
+    try {
+      const user = await this.userModel.findOne({ email });
+
+      if (!user) {
+        return 'User not found';
+      }
+
+      const buffer = await crypto.randomBytes(20);
+      const token = buffer.toString('hex');
+
+      const updatedUser = await this.userModel.findByIdAndUpdate(
+        { _id: user._id },
+        {
+          reset_password_token: token,
+          reset_password_expires: Date.now() + 86400000,
+          updated_at: Date.now(),
+        },
+        { upsert: true, new: true },
+      );
+
+      // Email
+      const emailResponse = await this.mailerService.sendMail({
+        to: 'augustin.brocquet@gmail.com',
+        from: 'noreply@nestjs.com',
+        subject: 'Testing Nest MailerModule ✔',
+        text: `welcome ${token}`,
+        html: `<b>welcome ${token}</b>`,
+      });
+
+      return [updatedUser, emailResponse, token];
+    } catch (error) {
+      return error;
     }
+  }
 
-    async getUsers() {
-        return await this.userModel.find().exec();
+  async checkPasswordResetToken(token: string) {
+    try {
+      const user = await this.userModel.findOne({
+        reset_password_token: token,
+      });
+
+      if (!user) {
+        return `Token : ${token} not found !`;
+      }
+
+      const compareDate = (date0: Date, date1: Date) => {
+        return date0 <= date1 ? true : false;
+      };
+
+      if (!compareDate) {
+        return `Token ${token} has expired !`;
+      }
+
+      return true;
+    } catch (error) {
+      return error;
     }
+  }
 
-    async findOneByEmail(email): Model<User> {
+  async resetPassword(
+    token: string,
+    password: string,
+    confirmPassword: string,
+  ) {
+    try {
+      if (password !== confirmPassword) {
+        return 'password and confirm password do not match';
+      }
 
-        return await this.userModel.findOne({ email });
+      const user = await this.userModel.findOne({
+        reset_password_token: token,
+      });
 
+      if (!user) {
+        return `Empty user associated with token ${token}`;
+      }
+
+      user.password = password;
+
+      return await user.save();
+    } catch (error) {
+      return error;
     }
+  }
 
-    async generatePasswordResetEmail(email: string) {
+  async updatePassword(userId: string, password: string) {
+    try {
+      const user = await this.userModel.findById(userId);
 
-        try {
+      if (!user) {
+        return 'User not found';
+      }
 
-            const user = await this.userModel.findOne({ email });
+      user.password = password;
 
-            if (!user) {
-                return 'User not found';
-            }
+      const updatedUser = await this.userModel.findByIdAndUpdate(
+        { _id: userId },
+        user,
+        { upsert: true, new: true },
+      );
 
-            const buffer = await crypto.randomBytes(20);
-            const token = buffer.toString('hex');
+      await updatedUser.save();
 
-            const updatedUser = await this.userModel.findByIdAndUpdate(
-                { _id: user._id },
-                {
-                    reset_password_token: token,
-                    reset_password_expires: Date.now() + 86400000,
-                    updated_at: Date.now(),
-                },
-                { upsert: true, new: true },
-            );
-
-            // Email
-            const emailResponse = await this
-                .mailerService
-                .sendMail({
-                    to: 'augustin.brocquet@gmail.com',
-                    from: 'noreply@nestjs.com',
-                    subject: 'Testing Nest MailerModule ✔',
-                    text: `welcome ${token}`,
-                    html: `<b>welcome ${token}</b>`,
-                });
-
-            return [updatedUser, emailResponse, token];
-
-        } catch (error) {
-            return error;
-        }
-
+      return [updatedUser, true];
+    } catch (error) {
+      return error;
     }
-
-    async checkPasswordResetToken(token: string) {
-
-        try {
-            const user = await this.userModel.findOne({ reset_password_token: token });
-
-            if (!user) {
-                return `Token : ${token} not found !`;
-            }
-
-            const compareDate = (date0: Date, date1: Date) => {
-                return (date0 <= date1) ? true : false;
-            };
-
-            if (!compareDate) {
-                return `Token ${token} has expired !`;
-            }
-
-            return true;
-        } catch (error) {
-            return error;
-        }
-
-    }
-
-    async resetPassword(token: string, password: string, confirmPassword: string) {
-
-        try {
-            if (password !== confirmPassword) {
-                return 'password and confirm password do not match';
-            }
-
-            const user = await this.userModel.findOne({ reset_password_token: token });
-
-            if (!user) {
-                return `Empty user associated with token ${token}`;
-            }
-
-            user.password = password;
-
-            return await user.save();
-        } catch (error) {
-            return error;
-        }
-
-    }
-
+  }
 }
