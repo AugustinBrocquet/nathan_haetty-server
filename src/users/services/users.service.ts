@@ -122,15 +122,9 @@ export class UsersService {
 
       user.password = password;
 
-      const updatedUser = await this.userModel.findByIdAndUpdate(
-        { _id: userId },
-        user,
-        { upsert: true, new: true },
-      );
+      await user.save();
 
-      await updatedUser.save();
-
-      return [updatedUser, true];
+      return [user, true];
     } catch (error) {
       return error;
     }
