@@ -41,6 +41,7 @@ export class UsersController {
     );
   }
 
+  @UseGuards(AuthGuard())
   @Post('update-password')
   async updatePassword(
     @Body('userId') userId: string,
