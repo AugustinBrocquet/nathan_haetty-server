@@ -46,11 +46,13 @@ export class PostsService {
 
             oldPost.title = post.title;
             oldPost.description = post.description;
-            oldPost.picture = post.picture;
+            if(post.picture) {
+                oldPost.picture = post.picture;
+            }
 
             oldPost.sub_pictures.map((element) => {
                 post.sub_pictures.filter((item) => {
-                    if (element != item) {
+                    if (element !== item) {
                         oldPost.sub_pictures.push(item);
                     }
                 });

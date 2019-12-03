@@ -77,16 +77,21 @@ export class PostsController {
     ),
   )
   @Put('/update')
-  // @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard())
   async updatePost(@UploadedFiles() files, @Body() updatePostDto: any) {
-    updatePostDto.picture = files.picture[0].originalname;
+
+    if (files.picture) {
+      updatePostDto.picture = files.picture[0].originalname;
+    }
+
     const pathsSubPictures = [];
 
-    files.sub_pictures.forEach(file => {
-      pathsSubPictures.push(file.originalname);
-    });
-    updatePostDto.sub_pictures = pathsSubPictures;
-
+    if (files.sub_pictures) {
+      files.sub_pictures.forEach(file => {
+        pathsSubPictures.push(file.originalname);
+      });
+      updatePostDto.sub_pictures = pathsSubPictures;
+    }
 
     return await this.postsService.updatePost(updatePostDto);
   }
