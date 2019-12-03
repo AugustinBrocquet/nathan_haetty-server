@@ -17,7 +17,7 @@ export class PostsService {
     }
 
     async getPosts() {
-        return await this.postModel.find().sort({created_at: '-1'}).exec();
+        return await this.postModel.find().sort({ created_at: '-1' }).exec();
     }
 
     async getPost(postId: string) {
@@ -34,22 +34,34 @@ export class PostsService {
     }
 
     async updatePost(post: any) {
+
         try {
-            const oldPost = await this.postModel.findById(post._id);
+            const oldPost = await this.postModel.findById(post.postId);
 
             if (!oldPost) {
                 return 'Post not found';
             }
 
-            post.updated_at = Date.now();
+            oldPost.updated_at = Date.now();
 
-            const updatedPost = await this.postModel.findByIdAndUpdate(
-                { _id: oldPost._id },
-                post,
-                { upsert: true, new: true },
-            );
+            oldPost.title = post.title;
+            oldPost.description = post.description;
+            oldPost.picture = post.picture;
 
-            return [updatedPost, true];
+            oldPost.sub_pictures.map((element) => {
+                post.sub_pictures.filter((item) => {
+                    if (element != item) {
+                        oldPost.sub_pictures.push(item);
+                    }
+                });
+            });
+            oldPost.sub_pictures = oldPost.sub_pictures.filter((elem, index, self) => {
+                return index === self.indexOf(elem);
+            });
+
+            return await oldPost.save();
+
+            // return [updatedPost, true];
         } catch (error) {
             return error;
         }

@@ -9,11 +9,12 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostsService } from './services/posts.service';
 import { CreatePostDto } from './DTOs/create-post.dto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import {
   editFileName,
   imageFileFilter,
@@ -22,7 +23,7 @@ import { diskStorage } from 'multer';
 
 @Controller('posts')
 export class PostsController {
-  constructor(private postsService: PostsService) {}
+  constructor(private postsService: PostsService) { }
 
   @Post()
   @UseInterceptors(
@@ -43,11 +44,11 @@ export class PostsController {
   async create(@UploadedFiles() files, @Body() createPostDto: CreatePostDto) {
     // return [files.picture, files.sub_pictures, createPostDto];
 
-    createPostDto.picture = files.picture[0].filename;
+    createPostDto.picture = files.picture[0].originalname;
     const pathsSubPictures = [];
 
     files.sub_pictures.forEach(file => {
-      pathsSubPictures.push(file.filename);
+      pathsSubPictures.push(file.originalname);
     });
     createPostDto.sub_pictures = pathsSubPictures;
     // return [createPostDto];
@@ -64,15 +65,34 @@ export class PostsController {
     return await this.postsService.getPost(postId);
   }
 
-  @Post('/update')
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'picture', maxCount: 1 },
+        { name: 'sub_pictures', maxCount: 20 },
+      ],
+      {
+        fileFilter: imageFileFilter,
+      },
+    ),
+  )
+  @Put('/update')
   // @UseGuards(AuthGuard())
-  async updatePost(@Body() updatePostDto: any) {
+  async updatePost(@UploadedFiles() files, @Body() updatePostDto: any) {
+    updatePostDto.picture = files.picture[0].originalname;
+    const pathsSubPictures = [];
+
+    files.sub_pictures.forEach(file => {
+      pathsSubPictures.push(file.originalname);
+    });
+    updatePostDto.sub_pictures = pathsSubPictures;
+
 
     return await this.postsService.updatePost(updatePostDto);
   }
 
   @Delete('/delete/:postId')
-@UseGuards(AuthGuard())
+  @UseGuards(AuthGuard())
   async deletePost(@Param('postId') postId: string) {
     return await this.postsService.deletePost(postId);
   }
