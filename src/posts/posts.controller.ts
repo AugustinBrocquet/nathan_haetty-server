@@ -101,4 +101,9 @@ export class PostsController {
   async deletePost(@Param('postId') postId: string) {
     return await this.postsService.deletePost(postId);
   }
+  @Put('delete-subpicture')
+  // @UseGuards(AuthGuard())
+  async deleteSubPicture(@Body() data: any) {
+    return await this.postsService.deleteSubPicture(data);
+  }
 }

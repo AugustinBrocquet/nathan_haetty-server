@@ -46,7 +46,7 @@ export class PostsService {
 
             oldPost.title = post.title;
             oldPost.description = post.description;
-            if(post.picture) {
+            if (post.picture) {
                 oldPost.picture = post.picture;
             }
 
@@ -72,6 +72,27 @@ export class PostsService {
     async deletePost(postId: string) {
         try {
             return await this.postModel.findOneAndRemove(postId);
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async deleteSubPicture(data: any) {
+
+        try {
+            const post = await this.postModel.findById(data.postId);
+
+            if (!post) {
+                return 'Post not found';
+            }
+
+            const subPictures = post.sub_pictures.filter((item) => {
+                return item !== data.filename;
+            });
+
+            post.sub_pictures = subPictures;
+
+            return await post.save();
         } catch (error) {
             return error;
         }
