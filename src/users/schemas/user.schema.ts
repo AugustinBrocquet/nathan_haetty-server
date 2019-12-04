@@ -28,13 +28,13 @@ export const UserSchema = new mongoose.Schema({
     },
     reset_password_token: {
         type: String,
-        unique: true,
+        unique: false,
         required: false,
         default: null,
     },
     reset_password_expires: {
         type: Date,
-        unique: true,
+        unique: false,
         required: false,
         default: null,
     },
