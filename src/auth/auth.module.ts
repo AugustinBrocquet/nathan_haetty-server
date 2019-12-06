@@ -12,7 +12,7 @@ import { PassportModule } from '@nestjs/passport';
     JwtModule.register({
       secret: 'EverythingButTheKitchenSinkNitsugua',
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: 7200,
       }
     }),
     UsersModule,
