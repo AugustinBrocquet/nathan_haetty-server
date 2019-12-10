@@ -11,7 +11,7 @@ export class UsersService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     private readonly mailerService: MailerService,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const createdUser = new this.userModel(createUserDto);
@@ -49,11 +49,11 @@ export class UsersService {
 
       // Email
       const emailResponse = await this.mailerService.sendMail({
-        to: 'augustin.brocquet@gmail.com',
-        from: 'noreply@nestjs.com',
-        subject: 'Testing Nest MailerModule ✔',
-        text: `welcome ${token}`,
-        html: `<b>welcome ${token}</b>`,
+        to: email,
+        from: 'contact@nathanhaetty.com',
+        subject: 'Réinitialisation mot de passe ✔',
+        text: `Bonjour voici votre lien pour générer votre nouveau mot de passe à cette adresse : https://nathanhaetty.com/#/admin/auth/reset-password/${token}`,
+        html: `Bonjour voici votre lien pour générer votre nouveau mot de passe:  <a href="https://nathanhaetty.com/#/admin/auth/reset-password/${token}">Générer un nouveau mot de passe</a>`,
       });
 
       return [updatedUser, emailResponse, token];
