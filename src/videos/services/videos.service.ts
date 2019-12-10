@@ -59,7 +59,7 @@ export class VideosService {
 
     async deleteVideo(videoId: string) {
         try {
-            return await this.videoModel.findOneAndRemove(videoId);
+            return await this.videoModel.findOneAndRemove({_id: videoId});
         } catch (error) {
             return error;
         }

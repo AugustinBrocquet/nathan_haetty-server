@@ -129,4 +129,13 @@ export class UsersService {
       return error;
     }
   }
+
+  async deleteUser(userId: string) {
+    // return [userId];
+    try {
+        return await this.userModel.findOneAndRemove({_id: userId});
+    } catch (error) {
+        return error;
+    }
+}
 }

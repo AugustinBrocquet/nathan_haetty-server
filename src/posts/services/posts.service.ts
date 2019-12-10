@@ -71,7 +71,7 @@ export class PostsService {
 
     async deletePost(postId: string) {
         try {
-            return await this.postModel.findOneAndRemove(postId);
+            return await this.postModel.findOneAndRemove({_id: postId});
         } catch (error) {
             return error;
         }

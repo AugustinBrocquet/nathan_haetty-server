@@ -59,7 +59,7 @@ export class WallpapersService {
 
     async deleteWallpaper(wallpaperId: string) {
         try {
-            return await this.wallpaperModel.findOneAndRemove(wallpaperId);
+            return await this.wallpaperModel.findOneAndRemove({_id: wallpaperId});
         } catch (error) {
             return error;
         }

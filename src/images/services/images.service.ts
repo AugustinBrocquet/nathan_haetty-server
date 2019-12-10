@@ -57,7 +57,7 @@ export class ImagesService {
 
     async deleteImage(imageId: string) {
         try {
-            return await this.imageModel.findOneAndRemove(imageId);
+            return await this.imageModel.findOneAndRemove({_id: imageId});
         } catch (error) {
             return error;
         }
