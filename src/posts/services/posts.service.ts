@@ -50,13 +50,27 @@ export class PostsService {
                 oldPost.picture = post.picture;
             }
 
-            oldPost.sub_pictures.map((element) => {
-                post.sub_pictures.filter((item) => {
-                    if (element !== item) {
-                        oldPost.sub_pictures.push(item);
-                    }
+            if (oldPost.sub_pictures.length === 0) {
+                post.sub_pictures.forEach(element => {
+                    oldPost.sub_pictures.push(element);
                 });
-            });
+            } else {
+                if (post.sub_pictures.length) {
+                    post.sub_pictures.forEach(element => {
+                        oldPost.sub_pictures.push(element);
+                    });
+                }
+                /*oldPost.sub_pictures.map((element) => {
+                    post.sub_pictures.filter((item) => {
+    
+                        if (element !== item) {
+                            oldPost.sub_pictures.push(item);
+                        }
+                    });
+                });*/
+            }
+
+            
             oldPost.sub_pictures = oldPost.sub_pictures.filter((elem, index, self) => {
                 return index === self.indexOf(elem);
             });
