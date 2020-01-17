@@ -47,9 +47,12 @@ export class PostsController {
     createPostDto.picture = files.picture[0].originalname;
     const pathsSubPictures = [];
 
-    files.sub_pictures.forEach(file => {
-      pathsSubPictures.push(file.originalname);
-    });
+    if (files.sub_pictures) {
+      files.sub_pictures.forEach(file => {
+        pathsSubPictures.push(file.originalname);
+      });
+    }
+
     createPostDto.sub_pictures = pathsSubPictures;
     // return [createPostDto];
     return await this.postsService.create(createPostDto);
