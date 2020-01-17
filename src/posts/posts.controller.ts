@@ -75,7 +75,10 @@ export class PostsController {
         { name: 'sub_pictures', maxCount: 20 },
       ],
       {
-        fileFilter: imageFileFilter,
+        storage: diskStorage({
+          destination: './resources/img',
+          filename: editFileName,
+        }),
       },
     ),
   )
