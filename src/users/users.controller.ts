@@ -55,4 +55,5 @@ export class UsersController {
   async deletePost(@Param('userId') userId: string) {
     return await this.usersService.deleteUser(userId);
   }
+  
 }
