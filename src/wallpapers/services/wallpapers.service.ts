@@ -37,21 +37,22 @@ export class WallpapersService {
 
     async updateWallpaper(wallpaper: any) {
         try {
-            const oldWallpaper = await this.wallpaperModel.findById(wallpaper._id);
+            console.log('id', wallpaper)
+            const oldWallpaper = await this.wallpaperModel.findById(wallpaper.wallpaperId);
 
             if (!oldWallpaper) {
                 return 'Wallpaper not found';
             }
 
-            wallpaper.updated_at = Date.now();
+            oldWallpaper.updated_at = Date.now();
+            // oldWallpaper.title = wallpaper.title;
 
-            const updatedWallpaper = await this.wallpaperModel.findByIdAndUpdate(
-                { _id: oldWallpaper._id },
-                wallpaper,
-                { upsert: true, new: true },
-            );
+            oldWallpaper.path_image = wallpaper.path_image;
 
-            return [updatedWallpaper, true];
+
+            return await oldWallpaper.save();
+
+            // return [updatedPost, true];
         } catch (error) {
             return error;
         }
@@ -59,7 +60,7 @@ export class WallpapersService {
 
     async deleteWallpaper(wallpaperId: string) {
         try {
-            return await this.wallpaperModel.findOneAndRemove({_id: wallpaperId});
+            return await this.wallpaperModel.findOneAndRemove({ _id: wallpaperId });
         } catch (error) {
             return error;
         }

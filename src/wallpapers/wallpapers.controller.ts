@@ -1,8 +1,8 @@
 import { CreateWallpaperDto } from './DTOs/create-wallpaper.dto';
 import { WallpapersService } from './services/wallpapers.service';
-import { Controller, Post, Body, Get, Param, UseGuards, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards, Delete, UseInterceptors, UploadedFiles, Put, UploadedFile } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from '../upload/utils/file-upload.utils';
 import { diskStorage } from 'multer';
 
@@ -37,24 +37,36 @@ export class WallpapersController {
     }
 
     @Get()
-    async getPosts() {
+    async getWallpapers() {
         return await this.wallpapersService.getWallpapers();
     }
 
     @Get('/:wallpaperId')
-    async getPost(@Param('wallpaperId') wallpaperId: string) {
+    async getWallpaper(@Param('wallpaperId') wallpaperId: string) {
         return await this.wallpapersService.getWallpaper(wallpaperId);
     }
 
-    @Post('/update')
+
+    @Put('update')
     @UseGuards(AuthGuard())
-    async updatePost(@Body() updateWallpaperDto: any) {
+    @UseInterceptors(
+        FileInterceptor('path_image', {
+            storage: diskStorage({
+                destination: './resources/img',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadedFile(@UploadedFile() file, @Body() updateWallpaperDto: any) {
+        // console.log('ededede');
+        updateWallpaperDto.path_image = file.originalname;
         return await this.wallpapersService.updateWallpaper(updateWallpaperDto);
     }
 
     @Delete('/delete/:wallpaperId')
     @UseGuards(AuthGuard())
-    async deletePost(@Param('wallpaperId') wallpaperId: string) {
+    async deleteWallpaper(@Param('wallpaperId') wallpaperId: string) {
         return await this.wallpapersService.deleteWallpaper(wallpaperId);
     }
 
