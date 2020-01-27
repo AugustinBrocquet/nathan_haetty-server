@@ -5,6 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from '../upload/utils/file-upload.utils';
 import { diskStorage } from 'multer';
+import * as PromiseFtp from 'promise-ftp';
 
 
 @Controller('wallpapers')
@@ -32,6 +33,14 @@ export class WallpapersController {
         // return [files.path_image, createWallpaperDto];
 
         createWallpaperDto.path_image = files.path_image[0].filename;
+
+        const ftp = new PromiseFtp();
+        ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
+            .then((serverMessage) => {
+                return ftp.put(`${__dirname}/../../resources/img/${files.path_image[0].filename}`, `/uploads/img/${files.path_image[0].filename}`);
+            }).then(() => {
+                return ftp.end();
+            });
 
         return await this.wallpapersService.create(createWallpaperDto);
     }
@@ -61,6 +70,15 @@ export class WallpapersController {
     async uploadedFile(@UploadedFile() file, @Body() updateWallpaperDto: any) {
         // console.log('ededede');
         updateWallpaperDto.path_image = file.originalname;
+
+        const ftp = new PromiseFtp();
+        ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
+            .then((serverMessage) => {
+                return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/uploads/img/${file.originalname}`);
+            }).then(() => {
+                return ftp.end();
+            });
+
         return await this.wallpapersService.updateWallpaper(updateWallpaperDto);
     }
 

@@ -20,6 +20,7 @@ import {
   imageFileFilter,
 } from '../upload/utils/file-upload.utils';
 import { diskStorage } from 'multer';
+import * as PromiseFtp from 'promise-ftp';
 
 @Controller('posts')
 export class PostsController {
@@ -45,11 +46,25 @@ export class PostsController {
     // return [files.picture, files.sub_pictures, createPostDto];
 
     createPostDto.picture = files.picture[0].originalname;
+
+    const ftp = new PromiseFtp();
+    ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
+      .then((serverMessage) => {
+        return ftp.put(`${__dirname}/../../resources/img/${files.picture[0].originalname}`, `/uploads/img/${files.picture[0].originalname}`);
+      }).then(() => {
+        return ftp.end();
+      });
     const pathsSubPictures = [];
 
     if (files.sub_pictures) {
       files.sub_pictures.forEach(file => {
         pathsSubPictures.push(file.originalname);
+        ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
+          .then((serverMessage) => {
+            return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/uploads/img/${file.originalname}`);
+          }).then(() => {
+            return ftp.end();
+          });
       });
     }
 
@@ -85,9 +100,16 @@ export class PostsController {
   @Put('/update')
   @UseGuards(AuthGuard())
   async updatePost(@UploadedFiles() files, @Body() updatePostDto: any) {
-
+    const ftp = new PromiseFtp();
     if (files.picture) {
       updatePostDto.picture = files.picture[0].originalname;
+
+      ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
+        .then((serverMessage) => {
+          return ftp.put(`${__dirname}/../../resources/img/${files.picture[0].originalname}`, `/uploads/img/${files.picture[0].originalname}`);
+        }).then(() => {
+          return ftp.end();
+        });
     }
 
     const pathsSubPictures = [];
@@ -95,6 +117,12 @@ export class PostsController {
     if (files.sub_pictures) {
       files.sub_pictures.forEach(file => {
         pathsSubPictures.push(file.originalname);
+        ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
+          .then((serverMessage) => {
+            return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/uploads/img/${file.originalname}`);
+          }).then(() => {
+            return ftp.end();
+          });
       });
       updatePostDto.sub_pictures = pathsSubPictures;
     }
