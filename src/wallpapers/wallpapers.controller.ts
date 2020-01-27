@@ -37,7 +37,7 @@ export class WallpapersController {
         const ftp = new PromiseFtp();
         ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
             .then((serverMessage) => {
-                return ftp.put(`${__dirname}/../../resources/img/${files.path_image[0].filename}`, `/uploads/img/${files.path_image[0].filename}`);
+                return ftp.put(`${__dirname}/../../resources/img/${files.path_image[0].filename}`, `/www/uploads/img/${files.path_image[0].filename}`);
             }).then(() => {
                 return ftp.end();
             });
@@ -74,7 +74,7 @@ export class WallpapersController {
         const ftp = new PromiseFtp();
         ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
             .then((serverMessage) => {
-                return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/uploads/img/${file.originalname}`);
+                return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/www/uploads/img/${file.originalname}`);
             }).then(() => {
                 return ftp.end();
             });

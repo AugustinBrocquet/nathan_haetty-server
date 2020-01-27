@@ -50,7 +50,7 @@ export class PostsController {
     const ftp = new PromiseFtp();
     ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
       .then((serverMessage) => {
-        return ftp.put(`${__dirname}/../../resources/img/${files.picture[0].originalname}`, `/uploads/img/${files.picture[0].originalname}`);
+        return ftp.put(`${__dirname}/../../resources/img/${files.picture[0].originalname}`, `/www/uploads/img/${files.picture[0].originalname}`);
       }).then(() => {
         return ftp.end();
       });
@@ -61,7 +61,7 @@ export class PostsController {
         pathsSubPictures.push(file.originalname);
         ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
           .then((serverMessage) => {
-            return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/uploads/img/${file.originalname}`);
+            return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/www/uploads/img/${file.originalname}`);
           }).then(() => {
             return ftp.end();
           });
@@ -106,7 +106,7 @@ export class PostsController {
 
       ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
         .then((serverMessage) => {
-          return ftp.put(`${__dirname}/../../resources/img/${files.picture[0].originalname}`, `/uploads/img/${files.picture[0].originalname}`);
+          return ftp.put(`${__dirname}/../../resources/img/${files.picture[0].originalname}`, `/www/uploads/img/${files.picture[0].originalname}`);
         }).then(() => {
           return ftp.end();
         });
@@ -119,7 +119,7 @@ export class PostsController {
         pathsSubPictures.push(file.originalname);
         ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
           .then((serverMessage) => {
-            return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/uploads/img/${file.originalname}`);
+            return ftp.put(`${__dirname}/../../resources/img/${file.originalname}`, `/www/uploads/img/${file.originalname}`);
           }).then(() => {
             return ftp.end();
           });
