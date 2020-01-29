@@ -57,8 +57,7 @@ export class PostsController {
     const pathsSubPictures = [];
 
     if (files.sub_pictures) {
-
-      for (const file of files.sub_pictures) {
+      files.sub_pictures.forEach(file => {
         pathsSubPictures.push(file.originalname);
         ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
           .then((serverMessage) => {
@@ -66,8 +65,7 @@ export class PostsController {
           }).then(() => {
             return ftp.end();
           });
-      }
-
+      });
     }
 
     createPostDto.sub_pictures = pathsSubPictures;
@@ -117,8 +115,7 @@ export class PostsController {
     const pathsSubPictures = [];
 
     if (files.sub_pictures) {
-
-      for (const file of files.sub_pictures) {
+      files.sub_pictures.forEach(file => {
         pathsSubPictures.push(file.originalname);
         ftp.connect({ host: 'ftp.cluster020.hosting.ovh.net', user: 'nathanhajh', password: 'Bhu8Nji9456' })
           .then((serverMessage) => {
@@ -126,8 +123,7 @@ export class PostsController {
           }).then(() => {
             return ftp.end();
           });
-      }
-
+      });
       updatePostDto.sub_pictures = pathsSubPictures;
     }
 
